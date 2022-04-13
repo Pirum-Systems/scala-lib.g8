@@ -4,6 +4,7 @@ ThisBuild / organization      := "com.pirum"
 ThisBuild / scalaVersion      := "2.13.8"
 ThisBuild / semanticdbEnabled := true
 ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
+ThisBuild / versionScheme     := Some("semver-spec")
 ThisBuild / scalafixDependencies ++= List(
   "com.github.liancheng" %% "organize-imports" % "0.5.0",
   "com.github.vovapolu"  %% "scaluzzi"         % "0.1.18"

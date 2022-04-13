@@ -3,11 +3,6 @@ image: "hseeberger/scala-sbt:8u312_1.6.2_2.13.8"
 variables:
   SBT_OPTS: "-Dsbt.global.base=sbt-cache/sbtboot -Dsbt.boot.directory=sbt-cache/boot -Dsbt.coursier.home=sbt-cache/coursier"
 
-before_script:
-  - apt-get update -q
-  - apt-get -yq install awscli
-  - CODEARTIFACT_AUTH_TOKEN=(`aws codeartifact get-authorization-token --domain pirum-scala --domain-owner 976632135703 --query authorizationToken --output text`)
-
 cache:
   untracked: true
   paths:
@@ -15,40 +10,40 @@ cache:
     - "sbt-cache/sbtboot"
     - "sbt-cache/coursier"
 
+get aws credentials:
+  stage: .pre
+  script:
+    - apt-get update -q
+    - apt-get -yq install awscli
+    - echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain pirum-scala --domain-owner 976632135703 --query authorizationToken --output text --region eu-west-2)" >> aws.env
+  artifacts:
+    reports:
+      dotenv: aws.env
+
 stages:
   - lint
   - build
   - test
   - release
 
-lint-job:
+lint:
   stage: lint
   script:
     - sbt check
 
-build-job:
+build:
   stage: build
   script:
     - sbt compile
 
-build-job-11:
-  extends: build-job
-  image: "hseeberger/scala-sbt:11.0.14.1_1.6.2_2.13.8"
-
-test-job:
+test:
   stage: test
   script:
     - sbt test
 
-test-job-11:
-  extends: test-job
-  image: "hseeberger/scala-sbt:11.0.14.1_1.6.2_2.13.8"
-  script:
-    - sbt test
-
-release-job:
+release:
   stage: release
   rules:
     - if: \$CI_COMMIT_TAG
   script:
-    - sbt 'set version := "'"\${CI_COMMIT_TAG}"'"' codeArtifactPublish
+    - sbt 'set ThisBuild/version := "'"\${CI_COMMIT_TAG}"'"' codeArtifactPublish
