@@ -15,7 +15,7 @@ get aws credentials:
   script:
     - apt-get update -q
     - apt-get -yq install awscli
-    - echo "CODEARTIFACT_AUTH_TOKEN=$(aws codeartifact get-authorization-token --domain pirum-scala --domain-owner 976632135703 --query authorizationToken --output text --region eu-west-2)" >> aws.env
+    - echo "CODEARTIFACT_AUTH_TOKEN=\$(aws codeartifact get-authorization-token --domain pirum-scala --domain-owner 976632135703 --query authorizationToken --output text --region eu-west-2)" >> aws.env
   artifacts:
     reports:
       dotenv: aws.env
