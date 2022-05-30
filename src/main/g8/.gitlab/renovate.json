@@ -5,5 +5,15 @@
     ":disableDependencyDashboard"
   ],
   "prConcurrentLimit": 15,
-  "branchConcurrentLimit": 15
+  "branchConcurrentLimit": 15,
+  "packageRules": [
+    {
+      "matchDatasources": [
+        "maven"
+      ],
+      "registryUrls": [
+        "https://pirum-scala-976632135703.d.codeartifact.eu-west-2.amazonaws.com/maven/internal/"
+      ]
+    }
+  ]
 }
