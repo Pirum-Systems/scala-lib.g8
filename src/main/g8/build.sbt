@@ -37,11 +37,11 @@ addCommandAlias("fmt", "all scalafmtSbt scalafmt Test/scalafmt")
 addCommandAlias("fix", "; all Compile/scalafix Test/scalafix; all scalafmtSbt scalafmtAll")
 addCommandAlias("check", "; scalafmtSbtCheck; scalafmtCheckAll; Compile/scalafix --check; Test/scalafix --check")
 
-lazy val $name;format="space,camel"$ = project
+lazy val $name;format="camel"$ = project
   .in(file("."))
   .settings(
     welcomeMessage,
-    buildInfoSettings("$name;format="space,package"$"),
-    Libraries.settings
+    standardSettings("$name;format="hyphen"$"),
+    buildInfoSettings("$name;format="hyphen"$")
   )
   .enablePlugins(BuildInfoPlugin)
